@@ -1,10 +1,12 @@
 
-A back end API to hit Leela Chess Zero through a REST endpoint
+A Back End API to Hit Leela Chess Zero Through a REST Endpoint
 ========================================================================
 AHN, Nov 2019
 
+This repo contains a flask based python back end to run lc0 as a REST service.
+
 A GUI front end that works with this can be found at
-`https://github.com/hauensteina/nibbler.git` .
+https://github.com/hauensteina/nibbler.git .
 
 It's currently all a work in progress, you might want to wait a week or so
 before trying.
@@ -30,11 +32,9 @@ $ cd lc0-server
 $ git clone https://github.com/LeelaChessZero/lc0.git
 ```
 
-
 Then follow the build instructions in lc0/README.md .
 
 The best weights are at
-
 
 ```bash
 $ wget --output-document best-network https://lczero.org/get_network?sha=8e36e7bb2f857eadf3163cb5d6cc3c5800fac0eba5951f8b1e51e3b732ee938b
@@ -61,7 +61,7 @@ To test whether the server works locally, in a separate window, type:
 $ curl -d  '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST http://127.0.0.1:3718/send_cmd
 ```
 
-There might be a globally accessible version of the server running already. Try
+I might have a globally accessible version of the server running already. Try
 
 ```bash
 $ curl -d '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST https://ahaux.com/lc0_server/send_cmd
@@ -98,11 +98,6 @@ $ cat /etc/apache2/sites-available/ahaux.conf
 
 </VirtualHost>
 ```
-
-
-
-
-
 
 <!-- Deployment Process for leela-server -->
 <!-- ------------------------------------- -->
