@@ -32,22 +32,19 @@ The server expects the lc0 binary and the weights in the folder
 
 The name of the weights file does not matter, lc0 auto detects it.
 
-To test whether the server works, in a separate window, type:
+To test whether the server works locally, in a separate window, type:
 
-# $ curl -d '{"cmd":"uci"}' -H "Content-Type: application/json" -X POST https://ahaux.com/leela_server/select-move/leela_gtp_bot
-$ curl -d '{"cmd":"uci"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:2718/send_cmd
-
-The production port is 2719.
+$ curl -d  '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST http://127.0.0.1:3718/send_cmd
 
 For testing, use
-LEELA_SERVER = 'https://ahaux.com/leela_server_test/'
-in heroku_app.py .
 
-The GUI needs to know the port. Edit leela-one-playout/static/main.js .
-You can switch between test and production at the very top.
+const LC0_URL = 'https://ahaux.com/lc0_server_test/'
+in 90_engine.js .
 
-The leela-one-playout GUI expects the back end at https://ahaux.com/leela_server .
-The apache2 config on ahaux.com (marfa) forwards leela-server to port 2719:
+For production, use
+const LC0_URL = 'https://ahaux.com/lc0_server/'
+
+The apache2 config on ahaux.com (marfa) forwards lc0_server to port 3719:
 
 $ cat /etc/apache2/sites-available/ahaux.conf
 <VirtualHost *:443>
@@ -67,15 +64,19 @@ $ cat /etc/apache2/sites-available/ahaux.conf
           Allow from all
     </Proxy>
     ProxyPreserveHost On
-    <Location "/leela_server">
-          ProxyPass "http://127.0.0.1:2719/"
-          ProxyPassReverse "http://127.0.0.1:2719/"
+    <Location "/lc0_server">
+          ProxyPass "http://127.0.0.1:3719/"
+          ProxyPassReverse "http://127.0.0.1:3719/"
     </Location>
 
 </VirtualHost>
 
-Point your browser at
-https://leela-one-playout.herokuapp.com
+To test https access from a different network:
+
+$ curl -d '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST https://ahaux.com/lc0_server_test/send_cmd
+
+
+
 
 Deployment Process for leela-server
 -------------------------------------

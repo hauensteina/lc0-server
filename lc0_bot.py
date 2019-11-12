@@ -85,6 +85,7 @@ class LC0Bot:
     # Pass through the reply.
     #---------------------------------------------
     def _result_handler( self, leela_response):
+        # print( leela_response)
         global g_response
         global g_response_event
         # We accumulate responses until a line starting with 'bestmove' comes in
@@ -126,20 +127,13 @@ class LC0Bot:
         global g_response
         global g_response_event
 
-        cmd = content['cmd']
+        cmds = content['cmds']
         nodes = content.get( 'nodes', 1)
 
-        if not cmd.startswith( 'position '):
-            return 'ignored %s' % cmd
-
         g_response = ''
-        self._leelaCmd( 'ucinewgame')
-        print( cmd)
-        self._leelaCmd( cmd)
-        cmd = 'go nodes %d' % nodes
-        print( cmd)
-        self._leelaCmd( cmd)
-
+        for cmd in cmds:
+            print( cmd)
+            self._leelaCmd( cmd)
         # Hang until the move comes back
         print( '>>>>>>>>> waiting')
         success = g_response_event.wait( TIMEOUT)
