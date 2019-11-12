@@ -66,6 +66,7 @@ Internals
 
 The apache2 config on ahaux.com (marfa) forwards lc0_server to port 3719:
 
+```bash
 $ cat /etc/apache2/sites-available/ahaux.conf
 <VirtualHost *:443>
     SSLEngine On
@@ -90,6 +91,8 @@ $ cat /etc/apache2/sites-available/ahaux.conf
     </Location>
 
 </VirtualHost>
+```
+
 
 
 
