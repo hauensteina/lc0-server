@@ -3,6 +3,12 @@ A back end API to hit Leela Chess Zero through a REST endpoint
 ========================================================================
 AHN, Nov 2019
 
+A GUI front end that works with this can be found at
+`https://github.com/hauensteina/nibbler.git` .
+
+It's currently all a work in progress, you might want to wait a week or so
+before trying.
+
 Overview
 ----------
 
