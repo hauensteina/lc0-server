@@ -8,33 +8,50 @@ In addition to the files in this repo (lc0-server), you need the lc0 source, bin
 You can get a clone from Nov 8, 2019, including a compiled binary for Ubuntu
 and the best weights file like this:
 
+```bash
 $ cd lc0-server
 $ aws s3 cp s3://ahn-uploads/lc0-server/lc0.tar.gz .
 $ tar zxf lc0.tar.gz
+```
 
 If prefer to do things yourself, lc0 is at
 
+```bash
 $ cd lc0-server
 $ git clone https://github.com/LeelaChessZero/lc0.git
+```
 
-The follow the build instructions in lc0/README.md
+
+Then follow the build instructions in lc0/README.md .
 
 The best weights are at
 
+
+```bash
 $ wget --output-document best-network https://lczero.org/get_network?sha=8e36e7bb2f857eadf3163cb5d6cc3c5800fac0eba5951f8b1e51e3b732ee938b
 This is network 10968 from Aug 2018, which was still the best available in Nov 2019 .
+```
 
 To start server for testing, say
+
+```bash
 python lc0_server.py
+```
 
 The server expects the lc0 binary and the weights in the folder
+
+```bash
 ./lc0/build/release
+```
 
 The name of the weights file does not matter, lc0 auto detects it.
 
 To test whether the server works locally, in a separate window, type:
 
+```bash
 $ curl -d  '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST http://127.0.0.1:3718/send_cmd
+```
+
 
 For testing, use
 
