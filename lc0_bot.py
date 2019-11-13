@@ -115,6 +115,24 @@ class LC0Bot:
         p.stdin.flush()
         #print( '--> ' + cmdstr)
 
+    # Some commands are illegal if running restfully
+    #--------------------------------------------------
+    def check_cmd( self, cmd):
+        cmd = cmd.strip().lower()
+        if cmd.startswith('setoption'):
+            return ''
+        elif cmd.startswith('go ') and not 'nodes' in cmd:
+            return ''
+        elif cmd.startswith('go '):
+            right = cmd.split( 'nodes')[1]
+            try:
+                n = int(right.split()[0])
+            except:
+                return ''
+            if n > 100000:
+                return ''
+        return cmd
+
     # This gets called from an endpoint to send a command.
     # The only accepted command is 'position', e.g.
     # position startpos move e2e4 c7c5 .
@@ -131,10 +149,23 @@ class LC0Bot:
         cmds = content['cmds']
         nodes = content.get( 'nodes', 1)
 
-        g_response = ''
+        comms = []
         for cmd in cmds:
+            comm = self.check_cmd( cmd)
+            if comm:
+                comms.append( comm)
+            else:
+                print( 'ignored illegal command: %s' % comm)
+
+        if not comms[-1].startswith( 'go nodes'):
+            print( 'ignoring command sequence not ending with go nodes')
+            return( 'err_no_go')
+
+        g_response = ''
+        for cmd in comms:
             print( cmd)
             self._leelaCmd( cmd)
+
         # Hang until the move comes back
         print( '>>>>>>>>> waiting')
         success = g_response_event.wait( TIMEOUT)
