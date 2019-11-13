@@ -24,7 +24,7 @@ g_response = ''
 g_handler_lock = Lock()
 g_response_event = Event()
 
-TIMEOUT = 10 # seconds
+TIMEOUT = 20 # seconds
 #===========================
 class LC0Bot:
     # Listen on a stream in a separate thread until
@@ -43,7 +43,8 @@ class LC0Bot:
                 global g_response_event
                 #global g_win_prob
                 while True:
-                    line = stream.readline().decode()
+                    tstr = stream.readline()
+                    line = tstr.decode()
                     if line:
                         result_handler( line)
                     else: # probably my process died
@@ -78,7 +79,7 @@ class LC0Bot:
     def _kill_leela( self):
         try:
             os.kill( self.leela_proc.pid, signal.SIGKILL)
-            print( 'killing old leela')
+            print( 'killing old leela %d' % self.leela_proc.pid)
         except:
             print( 'nothing to kill')
 
@@ -138,6 +139,7 @@ class LC0Bot:
         print( '>>>>>>>>> waiting')
         success = g_response_event.wait( TIMEOUT)
         if not success: # I guess leela died
+            g_response_event.clear()
             print( 'error: leela response timeout')
             self._error_handler()
             return None

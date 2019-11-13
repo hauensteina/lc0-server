@@ -33,8 +33,11 @@ app = Flask( 'lc0_server', static_folder=static_path, static_url_path='/static')
 def send_cmd():
     content = request.json
     resp = lc0bot.send_cmd( content)
-    lines = resp.split( '\n')
-    return jsonify( {'response':lines})
+    try:
+        lines = resp.split( '\n')
+        return jsonify( {'response':lines})
+    except Exception as e:
+        return jsonify( {'response':['noreply']})
 
 #----------------------------
 if __name__ == '__main__':
