@@ -64,13 +64,13 @@ $ curl -d  '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1"
 I might have a globally accessible version of the server running already. Try
 
 ```bash
-$ curl -d '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST https://ahaux.com/lc0_server/send_cmd
+$ curl -d '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST https://ahaux.com/lc0-server/send_cmd
 ```
 
 Internals
 -----------
 
-The apache2 config on ahaux.com (marfa) forwards lc0_server to port 3719:
+The apache2 config on ahaux.com (marfa) forwards lc0-server to port 3719:
 
 ```bash
 $ cat /etc/apache2/sites-available/ahaux.conf
@@ -99,60 +99,49 @@ $ cat /etc/apache2/sites-available/ahaux.conf
 </VirtualHost>
 ```
 
-Deployment Process for lc0_server
+Deployment Process for lc0-server
 -------------------------------------
-Log into the server (marfa), then:
 
-$ cd /var/www/leela-server
-$ systemctl stop leela-server
-$ git pull origin master
-$ git submodule update --init --recursive
-$ systemctl start leela-server
+First time install on the server (marfa):
+
+```bash
+# cd /var/www
+# git clone https://github.com/hauensteina/lc0-server.git
+# cd lc0-server
+# aws s3 cp s3://ahn-uploads/lc0-server/lc0.tar.gz .
+# tar zxf lc0.tar.gz
+```
 
 The service configuration is in
 
-/etc/systemd/system/leela-server.service:
+`/etc/systemd/system/lc0-server.service`:
 
+```
 [Unit]
-Description=leela-server
+Description=lc0-server
 After=network.target
 
 [Service]
 User=ahauenst
 Restart=on-failure
-WorkingDirectory=/var/www/leela-server
-ExecStart=/home/ahauenst/miniconda/envs/venv-dlgo/bin/gunicorn -c /var/www/leela-server/gunicorn.conf -b 0.0.0.0:2719 -w 1 leela_server:app
+WorkingDirectory=/var/www/lc0-server
+ExecStart=/home/ahauenst/miniconda/envs/venv-dlgo/bin/gunicorn -c /var/www/lc0-server/gunicorn.conf -b 0.0.0.0:3719 -w 1 lc0_server:app
 
 [Install]
 WantedBy=multi-user.target
+```
 
 Enable the service with
 
-$ sudo systemctl daemon-reload
-$ sudo systemctl enable leela-server
+# systemctl daemon-reload
+# systemctl enable lc0-server
+# systemctl start lc0-server
 
-Deployment Process for leela-one-playout (the Web front end)
---------------------------------------------------------------
+Test with curl:
 
-The heroku push happens through github.
-Log into the server (marfa), then:
-
-$ cd /var/www/leela-server/leela-one-playout
-$ git pull origin dev
-$ git pull origin master
-<< Change the server address to prod in static/main.js >>
-$ git merge dev
-$ git push origin master
-
-Log out of the server.
-On your desktop, do
-
-$ heroku logs -t --app leela-one-playout
-
-to see if things are OK.
-
-Point your browser at
-https://leela-one-playout.herokuapp.com
+```bash
+$ curl -d '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST https://ahaux.com/lc0-server/send_cmd
+```
 
 
 === The End ===
