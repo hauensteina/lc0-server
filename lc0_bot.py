@@ -117,8 +117,8 @@ class LC0Bot:
 
     # Some commands are illegal if running restfully
     #--------------------------------------------------
-    def check_cmd( self, cmd):
-        cmd = cmd.strip().lower()
+    def check_cmd( self, cmd_):
+        cmd = cmd_.strip().lower()
         if cmd.startswith('setoption'):
             return ''
         elif cmd.startswith('go ') and not 'nodes' in cmd:
@@ -131,7 +131,7 @@ class LC0Bot:
                 return ''
             if n > 100000:
                 return ''
-        return cmd
+        return cmd_
 
     # This gets called from an endpoint to send a command.
     # The only accepted command is 'position', e.g.
@@ -155,7 +155,7 @@ class LC0Bot:
             if comm:
                 comms.append( comm)
             else:
-                print( 'ignored illegal command: %s' % comm)
+                print( 'ignored illegal command: %s' % cmd)
 
         if not comms[-1].startswith( 'go nodes'):
             print( 'ignoring command sequence not ending with go nodes')

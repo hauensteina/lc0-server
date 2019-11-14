@@ -91,7 +91,7 @@ $ cat /etc/apache2/sites-available/ahaux.conf
           Allow from all
     </Proxy>
     ProxyPreserveHost On
-    <Location "/lc0_server">
+    <Location "/lc0-server">
           ProxyPass "http://127.0.0.1:3719/"
           ProxyPassReverse "http://127.0.0.1:3719/"
     </Location>
@@ -99,60 +99,60 @@ $ cat /etc/apache2/sites-available/ahaux.conf
 </VirtualHost>
 ```
 
-<!-- Deployment Process for leela-server -->
-<!-- ------------------------------------- -->
-<!-- Log into the server (marfa), then: -->
+Deployment Process for lc0_server
+-------------------------------------
+Log into the server (marfa), then:
 
-<!-- $ cd /var/www/leela-server -->
-<!-- $ systemctl stop leela-server -->
-<!-- $ git pull origin master -->
-<!-- $ git submodule update --init --recursive -->
-<!-- $ systemctl start leela-server -->
+$ cd /var/www/leela-server
+$ systemctl stop leela-server
+$ git pull origin master
+$ git submodule update --init --recursive
+$ systemctl start leela-server
 
-<!-- The service configuration is in -->
+The service configuration is in
 
-<!-- /etc/systemd/system/leela-server.service: -->
+/etc/systemd/system/leela-server.service:
 
-<!-- [Unit] -->
-<!-- Description=leela-server -->
-<!-- After=network.target -->
+[Unit]
+Description=leela-server
+After=network.target
 
-<!-- [Service] -->
-<!-- User=ahauenst -->
-<!-- Restart=on-failure -->
-<!-- WorkingDirectory=/var/www/leela-server -->
-<!-- ExecStart=/home/ahauenst/miniconda/envs/venv-dlgo/bin/gunicorn -c /var/www/leela-server/gunicorn.conf -b 0.0.0.0:2719 -w 1 leela_server:app -->
+[Service]
+User=ahauenst
+Restart=on-failure
+WorkingDirectory=/var/www/leela-server
+ExecStart=/home/ahauenst/miniconda/envs/venv-dlgo/bin/gunicorn -c /var/www/leela-server/gunicorn.conf -b 0.0.0.0:2719 -w 1 leela_server:app
 
-<!-- [Install] -->
-<!-- WantedBy=multi-user.target -->
+[Install]
+WantedBy=multi-user.target
 
-<!-- Enable the service with -->
+Enable the service with
 
-<!-- $ sudo systemctl daemon-reload -->
-<!-- $ sudo systemctl enable leela-server -->
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable leela-server
 
-<!-- Deployment Process for leela-one-playout (the Web front end) -->
-<!-- -------------------------------------------------------------- -->
+Deployment Process for leela-one-playout (the Web front end)
+--------------------------------------------------------------
 
-<!-- The heroku push happens through github. -->
-<!-- Log into the server (marfa), then: -->
+The heroku push happens through github.
+Log into the server (marfa), then:
 
-<!-- $ cd /var/www/leela-server/leela-one-playout -->
-<!-- $ git pull origin dev -->
-<!-- $ git pull origin master -->
-<!-- << Change the server address to prod in static/main.js >> -->
-<!-- $ git merge dev -->
-<!-- $ git push origin master -->
+$ cd /var/www/leela-server/leela-one-playout
+$ git pull origin dev
+$ git pull origin master
+<< Change the server address to prod in static/main.js >>
+$ git merge dev
+$ git push origin master
 
-<!-- Log out of the server. -->
-<!-- On your desktop, do -->
+Log out of the server.
+On your desktop, do
 
-<!-- $ heroku logs -t --app leela-one-playout -->
+$ heroku logs -t --app leela-one-playout
 
-<!-- to see if things are OK. -->
+to see if things are OK.
 
-<!-- Point your browser at -->
-<!-- https://leela-one-playout.herokuapp.com -->
+Point your browser at
+https://leela-one-playout.herokuapp.com
 
 
 === The End ===
