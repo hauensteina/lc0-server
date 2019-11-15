@@ -131,10 +131,11 @@ WantedBy=multi-user.target
 ```
 
 Enable the service with
-
+```bash
 # systemctl daemon-reload
 # systemctl enable lc0-server
 # systemctl start lc0-server
+```
 
 Test with curl:
 
