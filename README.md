@@ -8,8 +8,7 @@ This repo contains a flask based python back end to run lc0 as a REST service.
 A GUI front end that works with this can be found at
 https://github.com/hauensteina/nibbler.git .
 
-It's currently all a work in progress, you might want to wait a week or so
-before trying.
+This is now fully functional.
 
 Overview
 ----------
