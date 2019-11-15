@@ -40,7 +40,7 @@ $ wget --output-document best-network https://lczero.org/get_network?sha=8e36e7b
 ```
 This is network 10968 from Aug 2018, which was still the best available in Nov 2019 .
 
-To start server for testing, say
+To start the server for testing, say
 
 ```bash
 python lc0_server.py
@@ -60,7 +60,7 @@ To test whether the server works locally, in a separate window, type:
 $ curl -d  '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST http://127.0.0.1:3718/send_cmd
 ```
 
-I might have a globally accessible version of the server running already. Try
+I might have a globally accessible version of the server running. Try
 
 ```bash
 $ curl -d '{"cmds":[ "ucinewgame", "position startpos moves b2b4", "go nodes 1" ]}' -H "Content-Type: application/json" -X POST https://ahaux.com/lc0-server/send_cmd
